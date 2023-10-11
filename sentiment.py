@@ -4,21 +4,19 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 # Download the VADER lexicon
 nltk.download('vader_lexicon')
+st.title('Tool for analyzing document reviews: sentimental analysis')
+st.write('You can analyze sentiment of your content here!!')
 
-st.title('Twitter Sentiment Analysis')
-st.write('Welcome to my sentiment analysis app!')
-
-# Create a form for user input
-form = st.form(key='sentiment-form')
-user_input = form.text_area('Enter your text')
-submit = form.form_submit_button('Submit')
+# Create a file uploader component
+uploaded_file = st.file_uploader('Upload a text file', type=['txt'])
 
 # Initialize the sentiment analysis tool
 analyzer = SentimentIntensityAnalyzer()
 
-if submit:
-    # Analyze sentiment
-    sentiment_scores = analyzer.polarity_scores(user_input)
+if uploaded_file:
+    # Read and analyze sentiment for the content of the uploaded file
+    file_contents = uploaded_file.read().decode('utf-8')
+    sentiment_scores = analyzer.polarity_scores(file_contents)
     
     # Determine the sentiment category
     compound_score = sentiment_scores['compound']
